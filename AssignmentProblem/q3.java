@@ -1,30 +1,92 @@
+import java.util.*;
+
 public class q3 {
 
-    static class PasswordChecker {
-        private final String password;
+    static abstract class Room {
+        int units;
 
-        PasswordChecker(String password) {
-            this.password = password;
+        Room(int units) {
+            this.units = units;
         }
 
-        String getStrength() {
-            if (password.length() < 6)
-                return "Weak";
-            else if (password.length() < 10)
-                return "Medium";
-            else
-                return "Strong";
+        abstract double getBill();
+
+        abstract String getType();
+    }
+
+    static class Single extends Room {
+        Single(int units) {
+            super(units);
+        }
+
+        double getBill() {
+            return units * 8;
+        }
+
+        String getType() {
+            return "SINGLE";
+        }
+    }
+
+    static class Shared extends Room {
+        int occupants;
+
+        Shared(int units, int occupants) {
+            super(units);
+            this.occupants = occupants;
+        }
+
+        double getBill() {
+            return (units * 6) / occupants;
+        }
+
+        String getType() {
+            return "SHARED";
+        }
+    }
+
+    static class AC extends Room {
+        AC(int units) {
+            super(units);
+        }
+
+        double getBill() {
+            return units * 10 + 200;
+        }
+
+        String getType() {
+            return "AC";
         }
     }
 
     public static void main(String[] args) {
 
-        PasswordChecker pc1 = new PasswordChecker("abcd");
-        PasswordChecker pc2 = new PasswordChecker("abcdefgh");
-        PasswordChecker pc3 = new PasswordChecker("abcdefghijkl");
+        Scanner sc = new Scanner(System.in);
 
-        System.out.println(pc1.getStrength());
-        System.out.println(pc2.getStrength());
-        System.out.println(pc3.getStrength());
+        int n = sc.nextInt();
+        double total = 0;
+
+        for (int i = 0; i < n; i++) {
+
+            String type = sc.next();
+            int units = sc.nextInt();
+
+            Room r;
+
+            if (type.equals("SINGLE"))
+                r = new Single(units);
+            else if (type.equals("SHARED"))
+                r = new Shared(units, sc.nextInt());
+            else
+                r = new AC(units);
+
+            double bill = r.getBill();
+
+            System.out.printf("%s: %.2f%n", r.getType(), bill);
+
+            total += bill;
+        }
+
+        System.out.printf("Total: %.2f%n", total);
     }
 }

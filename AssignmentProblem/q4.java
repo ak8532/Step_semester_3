@@ -1,41 +1,78 @@
+import java.util.*;
+
 public class q4 {
 
-    static class TrafficLight {
-        private String color;
-        private final String id;
+    static abstract class Employee {
+        String name;
+        double salary;
 
-        TrafficLight(String id) {
-            this.id = id;
-            color = "RED";
+        Employee(String name, double salary) {
+            this.name = name;
+            this.salary = salary;
         }
 
-        void next() {
-            if (color.equals("RED"))
-                color = "GREEN";
-            else if (color.equals("GREEN"))
-                color = "YELLOW";
-            else
-                color = "RED";
+        abstract double getBonus();
+    }
+
+    static class FullTime extends Employee {
+        FullTime(String name, double salary) {
+            super(name, salary);
         }
 
-        String getColor() {
-            return color;
+        double getBonus() {
+            return salary * 0.10;
+        }
+    }
+
+    static class PartTime extends Employee {
+        PartTime(String name, double salary) {
+            super(name, salary);
+        }
+
+        double getBonus() {
+            return salary * 0.05;
+        }
+    }
+
+    static class Intern extends Employee {
+        Intern(String name, double salary) {
+            super(name, salary);
+        }
+
+        double getBonus() {
+            return 2000;
         }
     }
 
     public static void main(String[] args) {
 
-        TrafficLight t = new TrafficLight("TL-9");
+        Scanner sc = new Scanner(System.in);
 
-        System.out.println(t.getColor());
+        int n = sc.nextInt();
+        double total = 0;
 
-        t.next();
-        System.out.println(t.getColor());
+        for (int i = 0; i < n; i++) {
 
-        t.next();
-        System.out.println(t.getColor());
+            String type = sc.next();
+            String name = sc.next();
+            double salary = sc.nextDouble();
 
-        t.next();
-        System.out.println(t.getColor());
+            Employee e;
+
+            if (type.equals("FULLTIME"))
+                e = new FullTime(name, salary);
+            else if (type.equals("PARTTIME"))
+                e = new PartTime(name, salary);
+            else
+                e = new Intern(name, salary);
+
+            double bonus = e.getBonus();
+
+            System.out.printf("%s: %.2f%n", e.name, bonus);
+
+            total += bonus;
+        }
+
+        System.out.printf("Total Bonus: %.2f%n", total);
     }
 }

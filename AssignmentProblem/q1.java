@@ -1,44 +1,89 @@
+import java.util.*;
+
 public class q1 {
 
-    static class Character {
-        private int health;
-        private final int maxHealth;
+    static abstract class Customer {
+        double amount;
 
-        Character(int maxHealth) {
-            this.maxHealth = maxHealth;
-            this.health = maxHealth;
+        Customer(double amount) {
+            this.amount = amount;
         }
 
-        void takeDamage(int amount) {
-            health -= amount;
+        abstract double getFinalAmount();
 
-            if (health < 0)
-                health = 0;
+        abstract String getType();
+    }
+
+    static class Student extends Customer {
+        Student(double amount) {
+            super(amount);
         }
 
-        void heal(int amount) {
-            health += amount;
-
-            if (health > maxHealth)
-                health = maxHealth;
+        double getFinalAmount() {
+            return amount * 0.90;
         }
 
-        int getHealth() {
-            return health;
+        String getType() {
+            return "STUDENT";
+        }
+    }
+
+    static class Staff extends Customer {
+        Staff(double amount) {
+            super(amount);
+        }
+
+        double getFinalAmount() {
+            return amount * 0.95;
+        }
+
+        String getType() {
+            return "STAFF";
+        }
+    }
+
+    static class Guest extends Customer {
+        Guest(double amount) {
+            super(amount);
+        }
+
+        double getFinalAmount() {
+            return amount + 10;
+        }
+
+        String getType() {
+            return "GUEST";
         }
     }
 
     public static void main(String[] args) {
 
-        Character c = new Character(100);
+        Scanner sc = new Scanner(System.in);
 
-        c.takeDamage(30);
-        System.out.println("Health: " + c.getHealth());
+        int n = sc.nextInt();
+        double total = 0;
 
-        c.heal(50);
-        System.out.println("Health: " + c.getHealth());
+        for (int i = 0; i < n; i++) {
 
-        c.takeDamage(150);
-        System.out.println("Health: " + c.getHealth());
+            String type = sc.next();
+            double amount = sc.nextDouble();
+
+            Customer c;
+
+            if (type.equals("STUDENT"))
+                c = new Student(amount);
+            else if (type.equals("STAFF"))
+                c = new Staff(amount);
+            else
+                c = new Guest(amount);
+
+            double finalAmount = c.getFinalAmount();
+
+            System.out.printf("%s: %.2f%n", c.getType(), finalAmount);
+
+            total += finalAmount;
+        }
+
+        System.out.printf("Total: %.2f%n", total);
     }
 }

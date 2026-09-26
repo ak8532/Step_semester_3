@@ -1,53 +1,74 @@
+import java.time.LocalDate;
+import java.util.*;
+
 public class q5 {
 
-    static class Cart {
-        private double[] prices;
-        private final String id;
+    static abstract class Plan {
+        String name;
+        LocalDate startDate;
 
-        Cart(String id, int size) {
-            this.id = id;
-            prices = new double[size];
+        Plan(String name, LocalDate startDate) {
+            this.name = name;
+            this.startDate = startDate;
         }
 
-        void addItem(double price) {
-            for (int i = 0; i < prices.length; i++) {
-                if (prices[i] == 0) {
-                    prices[i] = price;
-                    return;
-                }
-            }
+        abstract int getDays();
+    }
+
+    static class Basic extends Plan {
+        Basic(String name, LocalDate date) {
+            super(name, date);
         }
 
-        double getTotal() {
-            double total = 0;
+        int getDays() {
+            return 30;
+        }
+    }
 
-            for (int i = 0; i < prices.length; i++)
-                total += prices[i];
-
-            return total;
+    static class Standard extends Plan {
+        Standard(String name, LocalDate date) {
+            super(name, date);
         }
 
-        int getItemCount() {
-            int count = 0;
+        int getDays() {
+            return 90;
+        }
+    }
 
-            for (int i = 0; i < prices.length; i++) {
-                if (prices[i] != 0)
-                    count++;
-            }
+    static class Premium extends Plan {
+        Premium(String name, LocalDate date) {
+            super(name, date);
+        }
 
-            return count;
+        int getDays() {
+            return 365;
         }
     }
 
     public static void main(String[] args) {
 
-        Cart cart = new Cart("CART-5", 20);
+        Scanner sc = new Scanner(System.in);
 
-        cart.addItem(250);
-        cart.addItem(99);
-        cart.addItem(151);
+        int n = sc.nextInt();
 
-        System.out.println("Total: " + cart.getTotal());
-        System.out.println("Count: " + cart.getItemCount());
+        for (int i = 0; i < n; i++) {
+
+            String type = sc.next();
+            String name = sc.next();
+            LocalDate date = LocalDate.parse(sc.next());
+
+            Plan p;
+
+            if (type.equals("BASIC"))
+                p = new Basic(name, date);
+            else if (type.equals("STANDARD"))
+                p = new Standard(name, date);
+            else
+                p = new Premium(name, date);
+
+            LocalDate renewalDate = p.startDate.plusDays(p.getDays());
+
+            System.out.println(p.name + ": " + renewalDate);
+        }
     }
 }

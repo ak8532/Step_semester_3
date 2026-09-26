@@ -1,47 +1,89 @@
+import java.util.*;
+
 public class q2 {
 
-    static class Playlist {
-        private String[] songs;
-        private int count;
+    static abstract class Vehicle {
+        int hours;
 
-        Playlist(int size) {
-            songs = new String[size];
-            count = 0;
+        Vehicle(int hours) {
+            this.hours = hours;
         }
 
-        void addSong(String song) {
-            if (count < songs.length) {
-                songs[count] = song;
-                count++;
-            }
+        abstract double getCharge();
+
+        abstract String getType();
+    }
+
+    static class Bike extends Vehicle {
+        Bike(int hours) {
+            super(hours);
         }
 
-        String[] getSongs() {
-            String[] copy = new String[count];
-
-            for (int i = 0; i < count; i++)
-                copy[i] = songs[i];
-
-            return copy;
+        double getCharge() {
+            return hours * 10;
         }
 
-        int getSongCount() {
-            return count;
+        String getType() {
+            return "BIKE";
+        }
+    }
+
+    static class Car extends Vehicle {
+        Car(int hours) {
+            super(hours);
+        }
+
+        double getCharge() {
+            return 30 + (hours - 1) * 20;
+        }
+
+        String getType() {
+            return "CAR";
+        }
+    }
+
+    static class Truck extends Vehicle {
+        Truck(int hours) {
+            super(hours);
+        }
+
+        double getCharge() {
+            return Math.max(hours * 50, 100);
+        }
+
+        String getType() {
+            return "TRUCK";
         }
     }
 
     public static void main(String[] args) {
 
-        Playlist p = new Playlist(10);
+        Scanner sc = new Scanner(System.in);
 
-        p.addSong("Song A");
-        p.addSong("Song B");
+        int n = sc.nextInt();
+        double total = 0;
 
-        String[] copy = p.getSongs();
-        copy[0] = "Hacked";
+        for (int i = 0; i < n; i++) {
 
-        System.out.println(p.getSongs()[0]);
-        System.out.println(p.getSongs()[1]);
-        System.out.println("Song count: " + p.getSongCount());
+            String type = sc.next();
+            int hours = sc.nextInt();
+
+            Vehicle v;
+
+            if (type.equals("BIKE"))
+                v = new Bike(hours);
+            else if (type.equals("CAR"))
+                v = new Car(hours);
+            else
+                v = new Truck(hours);
+
+            double charge = v.getCharge();
+
+            System.out.printf("%s: %.2f%n", v.getType(), charge);
+
+            total += charge;
+        }
+
+        System.out.printf("Total: %.2f%n", total);
     }
 }
