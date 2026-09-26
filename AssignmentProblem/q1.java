@@ -1,32 +1,44 @@
-class BookInventory {
-    String title;
-    String author;
-    int copiesAvailable;
-
-    BookInventory(String title, String author, int copiesAvailable) {
-        this.title = title;
-        this.author = author;
-        this.copiesAvailable = copiesAvailable;
-    }
-
-    void printEntry() {
-        System.out.println(title + " by " + author + " - "
-                + copiesAvailable + " copies available");
-    }
-}
-
 public class q1 {
+
+    static class Character {
+        private int health;
+        private final int maxHealth;
+
+        Character(int maxHealth) {
+            this.maxHealth = maxHealth;
+            this.health = maxHealth;
+        }
+
+        void takeDamage(int amount) {
+            health -= amount;
+
+            if (health < 0)
+                health = 0;
+        }
+
+        void heal(int amount) {
+            health += amount;
+
+            if (health > maxHealth)
+                health = maxHealth;
+        }
+
+        int getHealth() {
+            return health;
+        }
+    }
+
     public static void main(String[] args) {
 
-        BookInventory[] books = {
-            new BookInventory("Clean Code", "Robert C. Martin", 3),
-            new BookInventory("Effective Java", "Joshua Bloch", 5),
-            new BookInventory("Refactoring", "Martin Fowler", 0),
-            new BookInventory("Design Patterns", "GoF", 2)
-        };
+        Character c = new Character(100);
 
-        for (BookInventory b : books) {
-            b.printEntry();
-        }
+        c.takeDamage(30);
+        System.out.println("Health: " + c.getHealth());
+
+        c.heal(50);
+        System.out.println("Health: " + c.getHealth());
+
+        c.takeDamage(150);
+        System.out.println("Health: " + c.getHealth());
     }
 }

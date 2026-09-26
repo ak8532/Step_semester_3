@@ -1,49 +1,47 @@
-class PayrollAccount {
-    private double basicSalary;
-    private double bonus;
-
-    PayrollAccount(double basicSalary) {
-        if (basicSalary < 0) {
-            System.out.println("Invalid salary");
-            this.basicSalary = 0;
-        } else {
-            this.basicSalary = basicSalary;
-        }
-
-        bonus = 0;
-    }
-
-    void creditBonus(double amount) {
-        if (amount <= 0) {
-            System.out.println("Bonus rejected");
-        } else {
-            bonus += amount;
-            System.out.println("Bonus credited: Rs " + amount);
-        }
-    }
-
-    void deductTax(double percent) {
-        if (percent < 0 || percent > 100) {
-            System.out.println("Invalid tax percentage");
-        } else {
-            basicSalary = basicSalary - (basicSalary * percent / 100);
-            System.out.println("Tax deducted: " + percent + "%");
-        }
-    }
-
-    double getNetSalary() {
-        return basicSalary + bonus;
-    }
-}
-
 public class q2 {
+
+    static class Playlist {
+        private String[] songs;
+        private int count;
+
+        Playlist(int size) {
+            songs = new String[size];
+            count = 0;
+        }
+
+        void addSong(String song) {
+            if (count < songs.length) {
+                songs[count] = song;
+                count++;
+            }
+        }
+
+        String[] getSongs() {
+            String[] copy = new String[count];
+
+            for (int i = 0; i < count; i++)
+                copy[i] = songs[i];
+
+            return copy;
+        }
+
+        int getSongCount() {
+            return count;
+        }
+    }
+
     public static void main(String[] args) {
 
-        PayrollAccount p = new PayrollAccount(50000);
+        Playlist p = new Playlist(10);
 
-        p.creditBonus(5000);
-        p.deductTax(10);
+        p.addSong("Song A");
+        p.addSong("Song B");
 
-        System.out.println("Net salary: Rs " + p.getNetSalary());
+        String[] copy = p.getSongs();
+        copy[0] = "Hacked";
+
+        System.out.println(p.getSongs()[0]);
+        System.out.println(p.getSongs()[1]);
+        System.out.println("Song count: " + p.getSongCount());
     }
 }

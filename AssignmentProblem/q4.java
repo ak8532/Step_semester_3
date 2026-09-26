@@ -1,29 +1,41 @@
-class HallTicket {
-    String studentName;
-    int seatNumber;
+public class q4 {
 
-    HallTicket(String studentName, int seatNumber) {
-        this.studentName = studentName;
-        this.seatNumber = seatNumber;
+    static class TrafficLight {
+        private String color;
+        private final String id;
+
+        TrafficLight(String id) {
+            this.id = id;
+            color = "RED";
+        }
+
+        void next() {
+            if (color.equals("RED"))
+                color = "GREEN";
+            else if (color.equals("GREEN"))
+                color = "YELLOW";
+            else
+                color = "RED";
+        }
+
+        String getColor() {
+            return color;
+        }
     }
-}
 
-public class q4{
     public static void main(String[] args) {
 
-        HallTicket priya = new HallTicket("Priya", 0);
+        TrafficLight t = new TrafficLight("TL-9");
 
-        HallTicket copy = priya;
+        System.out.println(t.getColor());
 
-        copy.seatNumber = 45;
+        t.next();
+        System.out.println(t.getColor());
 
-        HallTicket separate = new HallTicket("Priya", 45);
+        t.next();
+        System.out.println(t.getColor());
 
-        System.out.println("Priya's seatNumber (via first variable): "
-                + priya.seatNumber);
-
-        System.out.println("copy == priya: " + (copy == priya));
-
-        System.out.println("separate == priya: " + (separate == priya));
+        t.next();
+        System.out.println(t.getColor());
     }
 }

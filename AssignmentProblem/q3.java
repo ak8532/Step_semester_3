@@ -1,34 +1,30 @@
-class Employee {
-    String empId;
-    String empName;
-    double salary;
-    boolean isIntern;
-
-    Employee(String empId, String empName, double salary) {
-        this.empId = empId;
-        this.empName = empName;
-        this.salary = salary;
-        this.isIntern = false;
-    }
-
-    Employee(String empId, String empName) {
-        this(empId, empName, 0);
-        this.isIntern = true;
-    }
-
-    void printProfile() {
-        System.out.println(empId + " | " + empName + " | Rs "
-                + salary + " | Intern: " + isIntern);
-    }
-}
-
 public class q3 {
+
+    static class PasswordChecker {
+        private final String password;
+
+        PasswordChecker(String password) {
+            this.password = password;
+        }
+
+        String getStrength() {
+            if (password.length() < 6)
+                return "Weak";
+            else if (password.length() < 10)
+                return "Medium";
+            else
+                return "Strong";
+        }
+    }
+
     public static void main(String[] args) {
 
-        Employee e1 = new Employee("E-101", "Divya", 65000);
-        Employee e2 = new Employee("E-102", "Arjun");
+        PasswordChecker pc1 = new PasswordChecker("abcd");
+        PasswordChecker pc2 = new PasswordChecker("abcdefgh");
+        PasswordChecker pc3 = new PasswordChecker("abcdefghijkl");
 
-        e1.printProfile();
-        e2.printProfile();
+        System.out.println(pc1.getStrength());
+        System.out.println(pc2.getStrength());
+        System.out.println(pc3.getStrength());
     }
 }

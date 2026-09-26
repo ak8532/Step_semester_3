@@ -1,34 +1,53 @@
 public class q5 {
 
-    static class Employee {
-        String empName;
-        double salary;
+    static class Cart {
+        private double[] prices;
+        private final String id;
 
-        static String companyName = "Bright Horizon Technologies";
-        static int employeeCount = 0;
-
-        Employee(String empName, double salary) {
-            this.empName = empName;
-            this.salary = salary;
-            employeeCount++;
+        Cart(String id, int size) {
+            this.id = id;
+            prices = new double[size];
         }
 
-        static void printCompanyInfo() {
-            System.out.println(companyName);
-            System.out.println("Employees on record: " + employeeCount);
+        void addItem(double price) {
+            for (int i = 0; i < prices.length; i++) {
+                if (prices[i] == 0) {
+                    prices[i] = price;
+                    return;
+                }
+            }
+        }
+
+        double getTotal() {
+            double total = 0;
+
+            for (int i = 0; i < prices.length; i++)
+                total += prices[i];
+
+            return total;
+        }
+
+        int getItemCount() {
+            int count = 0;
+
+            for (int i = 0; i < prices.length; i++) {
+                if (prices[i] != 0)
+                    count++;
+            }
+
+            return count;
         }
     }
 
     public static void main(String[] args) {
 
-        Employee e1 = new Employee("Ravi", 40000);
-        Employee e2 = new Employee("Priya", 50000);
-        Employee e3 = new Employee("Arjun", 45000);
+        Cart cart = new Cart("CART-5", 20);
 
-        System.out.println(e1.empName);
-        System.out.println(e2.empName);
-        System.out.println(e3.empName);
+        cart.addItem(250);
+        cart.addItem(99);
+        cart.addItem(151);
 
-        Employee.printCompanyInfo();
+        System.out.println("Total: " + cart.getTotal());
+        System.out.println("Count: " + cart.getItemCount());
     }
 }
