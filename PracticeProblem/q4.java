@@ -1,41 +1,29 @@
 public class q4 {
 
-    static double rowAverage(int[] row) {
+    static class Locker {
+        private String code;
+        private final int lockerNumber;
 
-        int sum = 0;
-
-        for (int x : row)
-            sum += x;
-
-        return (double) sum / row.length;
-    }
-
-    static String classifyMatches(int[][] runs, int threshold) {
-
-        String result = "";
-
-        for (int i = 0; i < runs.length; i++) {
-
-            if (rowAverage(runs[i]) >= threshold)
-                result += "Match " + i + ": Power Surge";
-            else
-                result += "Match " + i + ": Normal";
-
-            if (i < runs.length - 1)
-                result += " | ";
+        Locker(int lockerNumber, String code) {
+            this.lockerNumber = lockerNumber;
+            this.code = code;
         }
 
-        return result;
+        void changeCode(String oldCode, String newCode) {
+            if (code.equals(oldCode)) {
+                code = newCode;
+                System.out.println("Code changed successfully");
+            } else {
+                System.out.println("Code change rejected");
+            }
+        }
     }
 
     public static void main(String[] args) {
 
-        int[][] runs = {
-            {4, 6, 8},
-            {10, 12, 14},
-            {2, 3, 1}
-        };
+        Locker l = new Locker(101, "1234");
 
-        System.out.println(classifyMatches(runs, 8));
+        l.changeCode("1234", "5678");
+        l.changeCode("0000", "9999");
     }
 }

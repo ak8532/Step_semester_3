@@ -1,76 +1,50 @@
-import java.util.Arrays;
-
 public class q5 {
 
-    static class Player implements Comparable<Player> {
+    static class AttendanceSheet {
+        private String[] students;
+        private int count;
 
-        String name;
-        int matchesPlayed;
-        double battingAverage;
-        boolean injured;
-
-        Player(String name, int matchesPlayed, double battingAverage, boolean injured) {
-            this.name = name;
-            this.matchesPlayed = matchesPlayed;
-            this.battingAverage = battingAverage;
-            this.injured = injured;
+        AttendanceSheet(int size) {
+            students = new String[size];
+            count = 0;
         }
 
-        static boolean isDraftable(int matchesPlayed) {
-            return matchesPlayed >= 10;
-        }
+        void markPresent(String name) {
 
-        static boolean isDraftable(int matchesPlayed, boolean injured) {
-            return matchesPlayed >= 5 && !injured;
-        }
+            if (isPresent(name))
+                return;
 
-        @Override
-        public int compareTo(Player other) {
-            return Double.compare(other.battingAverage, battingAverage);
-        }
-    }
-
-    static String draftAndRank(Player[] players) {
-
-        Player[] draftable = new Player[players.length];
-        int count = 0;
-
-        for (Player p : players) {
-
-            if (Player.isDraftable(p.matchesPlayed) ||
-                Player.isDraftable(p.matchesPlayed, p.injured)) {
-
-                draftable[count] = p;
+            if (count < students.length) {
+                students[count] = name;
                 count++;
             }
         }
 
-        draftable = Arrays.copyOf(draftable, count);
-
-        Arrays.sort(draftable);
-
-        String result = "";
-
-        for (int i = 0; i < draftable.length; i++) {
-
-            result += (i + 1) + ". " + draftable[i].name;
-
-            if (i < draftable.length - 1)
-                result += " | ";
+        int getPresentCount() {
+            return count;
         }
 
-        return result;
+        boolean isPresent(String name) {
+
+            for (int i = 0; i < count; i++) {
+                if (students[i].equals(name))
+                    return true;
+            }
+
+            return false;
+        }
     }
 
     public static void main(String[] args) {
 
-        Player[] players = {
-            new Player("Virat", 15, 48.0, false),
-            new Player("Rahul", 7, 55.0, false),
-            new Player("Sameer", 3, 60.0, false),
-            new Player("Dev", 12, 20.0, true)
-        };
+        AttendanceSheet sheet = new AttendanceSheet(30);
 
-        System.out.println(draftAndRank(players));
+        sheet.markPresent("Ana");
+        sheet.markPresent("Ben");
+        sheet.markPresent("Ana");
+
+        System.out.println("Present: " + sheet.getPresentCount());
+        System.out.println("Ben present: " + sheet.isPresent("Ben"));
+        System.out.println("Chen present: " + sheet.isPresent("Chen"));
     }
 }

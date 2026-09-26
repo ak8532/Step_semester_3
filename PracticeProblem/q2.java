@@ -1,47 +1,41 @@
-class MessWallet {
+public class q2 {
 
-    private double balance;
+    static class Scorecard {
+        private boolean[] answers;
+        private int count;
+        private int score;
 
-    public MessWallet(double balance) {
-        if (balance < 0) {
-            System.out.println("Negative opening balance rejected");
-            this.balance = 0;
-        } else {
-            this.balance = balance;
+        Scorecard(int questions) {
+            answers = new boolean[questions];
+            count = 0;
+            score = 0;
+        }
+
+        void recordAnswer(boolean correct) {
+            if (count < answers.length) {
+                answers[count] = correct;
+
+                if (correct)
+                    score++;
+
+                count++;
+            }
+        }
+
+        int getScore() {
+            return score;
         }
     }
 
-    public void topUp(double amount) {
-        if (amount <= 0)
-            System.out.println("Top-up rejected");
-        else
-            balance += amount;
-    }
-
-    public void deduct(double amount) {
-        if (amount > balance)
-            System.out.println("Deduct rejected: insufficient balance");
-        else if (amount <= 0)
-            System.out.println("Invalid deduction");
-        else
-            balance -= amount;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-}
-
-public class q2{
     public static void main(String[] args) {
 
-        MessWallet wallet = new MessWallet(500);
+        Scorecard sc = new Scorecard(4);
 
-        wallet.topUp(200);
-        System.out.println("Balance after top-up: " + wallet.getBalance());
+        sc.recordAnswer(true);
+        sc.recordAnswer(true);
+        sc.recordAnswer(false);
+        sc.recordAnswer(true);
 
-        wallet.deduct(1000);
-
-        System.out.println("Final balance: " + wallet.getBalance());
+        System.out.println("Score: " + sc.getScore());
     }
 }

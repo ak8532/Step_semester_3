@@ -1,29 +1,42 @@
-class PlacementRecord {
-    String studentName;
-    String company;
-    double packageLpa;
-
-    PlacementRecord(String studentName, String company, double packageLpa) {
-        this.studentName = studentName;
-        this.company = company;
-        this.packageLpa = packageLpa;
-    }
-
-    void printRecord() {
-        System.out.println(studentName + " -> " + company + " @ " + packageLpa + " LPA");
-    }
-}
-
 public class q1 {
+
+    static class PiggyBank {
+        private double savings;
+        private final String id;
+
+        PiggyBank(String id) {
+            this.id = id;
+            savings = 0;
+        }
+
+        void deposit(double amount) {
+            if (amount > 0)
+                savings += amount;
+        }
+
+        void withdraw(double amount) {
+            if (amount > savings)
+                System.out.println("Withdrawal rejected");
+            else if (amount > 0)
+                savings -= amount;
+        }
+
+        double getSavings() {
+            return savings;
+        }
+    }
+
     public static void main(String[] args) {
 
-        PlacementRecord[] records = {
-            new PlacementRecord("Ravi", "TCS", 4.5),
-            new PlacementRecord("Anitha", "Zoho", 6.2),
-            new PlacementRecord("Karthik", "Infosys", 4.0)
-        };
+        PiggyBank pb = new PiggyBank("PB-1");
 
-        for (PlacementRecord r : records)
-            r.printRecord();
+        pb.deposit(100);
+        System.out.println("Savings: " + pb.getSavings());
+
+        pb.withdraw(30);
+        System.out.println("Savings: " + pb.getSavings());
+
+        pb.withdraw(500);
+        System.out.println("Savings: " + pb.getSavings());
     }
 }

@@ -1,27 +1,24 @@
 public class q3 {
 
-    static String findMinMaxSpread(int[] scores) {
+    static class NameTag {
+        private final String firstName;
+        private final String lastName;
 
-        int min = scores[0];
-        int max = scores[0];
-
-        for (int i = 1; i < scores.length; i++) {
-
-            if (scores[i] < min)
-                min = scores[i];
-
-            if (scores[i] > max)
-                max = scores[i];
+        NameTag(String fullName) {
+            String[] parts = fullName.split(" ");
+            firstName = parts[0];
+            lastName = parts[1];
         }
 
-        return "Min: " + min + " | Max: " + max +
-               " | Spread: " + (max - min);
+        String getNickname() {
+            return firstName + " " + lastName.charAt(0) + ".";
+        }
     }
 
     public static void main(String[] args) {
 
-        int[] scores = {45, 82, 79, 90, 33, 90, 61};
+        NameTag tag = new NameTag("Maria Gomez");
 
-        System.out.println(findMinMaxSpread(scores));
+        System.out.println(tag.getNickname());
     }
 }
