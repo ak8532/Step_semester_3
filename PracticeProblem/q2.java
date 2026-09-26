@@ -1,41 +1,73 @@
+import java.time.*;
+import java.util.*;
+
 public class q2 {
 
-    static class Scorecard {
-        private boolean[] answers;
-        private int count;
-        private int score;
+    static abstract class LibraryItem {
+        String title;
 
-        Scorecard(int questions) {
-            answers = new boolean[questions];
-            count = 0;
-            score = 0;
+        LibraryItem(String title) {
+            this.title = title;
         }
 
-        void recordAnswer(boolean correct) {
-            if (count < answers.length) {
-                answers[count] = correct;
+        abstract int days();
+    }
 
-                if (correct)
-                    score++;
-
-                count++;
-            }
+    static class Book extends LibraryItem {
+        Book(String title) {
+            super(title);
         }
 
-        int getScore() {
-            return score;
+        int days() {
+            return 14;
+        }
+    }
+
+    static class DVD extends LibraryItem {
+        DVD(String title) {
+            super(title);
+        }
+
+        int days() {
+            return 7;
+        }
+    }
+
+    static class Magazine extends LibraryItem {
+        Magazine(String title) {
+            super(title);
+        }
+
+        int days() {
+            return 3;
         }
     }
 
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-        Scorecard sc = new Scorecard(4);
+        int n = Integer.parseInt(sc.nextLine());
+        LocalDate date = LocalDate.of(2023, 10, 26);
 
-        sc.recordAnswer(true);
-        sc.recordAnswer(true);
-        sc.recordAnswer(false);
-        sc.recordAnswer(true);
+        for (int i = 0; i < n; i++) {
+            String line = sc.nextLine();
 
-        System.out.println("Score: " + sc.getScore());
+            int space = line.indexOf(" ");
+            String type = line.substring(0, space);
+            String title = line.substring(space + 1).replace("\"", "");
+
+            LibraryItem item;
+
+            if (type.equals("BOOK"))
+                item = new Book(title);
+            else if (type.equals("DVD"))
+                item = new DVD(title);
+            else
+                item = new Magazine(title);
+
+            LocalDate due = date.plusDays(item.days());
+
+            System.out.println(item.title + ": " + due);
+        }
     }
 }

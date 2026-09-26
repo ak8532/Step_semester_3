@@ -1,50 +1,88 @@
+import java.util.*;
+
 public class q5 {
 
-    static class AttendanceSheet {
-        private String[] students;
-        private int count;
+    static abstract class Transport {
+        double distance;
 
-        AttendanceSheet(int size) {
-            students = new String[size];
-            count = 0;
+        Transport(double distance) {
+            this.distance = distance;
         }
 
-        void markPresent(String name) {
+        abstract double fare();
+        abstract String type();
+    }
 
-            if (isPresent(name))
-                return;
-
-            if (count < students.length) {
-                students[count] = name;
-                count++;
-            }
+    static class Bus extends Transport {
+        Bus(double d) {
+            super(d);
         }
 
-        int getPresentCount() {
-            return count;
+        double fare() {
+            return Math.min(2 + 0.1 * distance, 10);
         }
 
-        boolean isPresent(String name) {
+        String type() {
+            return "BUS";
+        }
+    }
 
-            for (int i = 0; i < count; i++) {
-                if (students[i].equals(name))
-                    return true;
-            }
+    static class Train extends Transport {
+        Train(double d) {
+            super(d);
+        }
 
-            return false;
+        double fare() {
+            return 3 + 0.15 * distance;
+        }
+
+        String type() {
+            return "TRAIN";
+        }
+    }
+
+    static class Metro extends Transport {
+        double factor;
+
+        Metro(double d, double factor) {
+            super(d);
+            this.factor = factor;
+        }
+
+        double fare() {
+            return (1.5 + 0.2 * distance) * factor;
+        }
+
+        String type() {
+            return "METRO";
         }
     }
 
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-        AttendanceSheet sheet = new AttendanceSheet(30);
+        int n = sc.nextInt();
+        double total = 0;
 
-        sheet.markPresent("Ana");
-        sheet.markPresent("Ben");
-        sheet.markPresent("Ana");
+        for (int i = 0; i < n; i++) {
+            String type = sc.next();
+            double distance = sc.nextDouble();
 
-        System.out.println("Present: " + sheet.getPresentCount());
-        System.out.println("Ben present: " + sheet.isPresent("Ben"));
-        System.out.println("Chen present: " + sheet.isPresent("Chen"));
+            Transport t;
+
+            if (type.equals("BUS"))
+                t = new Bus(distance);
+            else if (type.equals("TRAIN"))
+                t = new Train(distance);
+            else
+                t = new Metro(distance, sc.nextDouble());
+
+            double fare = t.fare();
+
+            System.out.printf("%s: %.2f%n", t.type(), fare);
+            total += fare;
+        }
+
+        System.out.printf("Total: %.2f%n", total);
     }
 }

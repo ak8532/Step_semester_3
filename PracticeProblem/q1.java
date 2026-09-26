@@ -1,42 +1,88 @@
+import java.util.*;
+
 public class q1 {
 
-    static class PiggyBank {
-        private double savings;
-        private final String id;
+    static abstract class Payment {
+        double amount;
 
-        PiggyBank(String id) {
-            this.id = id;
-            savings = 0;
+        Payment(double amount) {
+            this.amount = amount;
         }
 
-        void deposit(double amount) {
-            if (amount > 0)
-                savings += amount;
+        abstract double finalAmount();
+
+        String type() {
+            return getClass().getSimpleName();
+        }
+    }
+
+    static class Card extends Payment {
+        Card(double amount) {
+            super(amount);
         }
 
-        void withdraw(double amount) {
-            if (amount > savings)
-                System.out.println("Withdrawal rejected");
-            else if (amount > 0)
-                savings -= amount;
+        double finalAmount() {
+            return amount * 1.02;
         }
 
-        double getSavings() {
-            return savings;
+        String type() {
+            return "CARD";
+        }
+    }
+
+    static class Wallet extends Payment {
+        Wallet(double amount) {
+            super(amount);
+        }
+
+        double finalAmount() {
+            return amount * 1.01;
+        }
+
+        String type() {
+            return "WALLET";
+        }
+    }
+
+    static class BankTransfer extends Payment {
+        BankTransfer(double amount) {
+            super(amount);
+        }
+
+        double finalAmount() {
+            return amount;
+        }
+
+        String type() {
+            return "BANKTRANSFER";
         }
     }
 
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-        PiggyBank pb = new PiggyBank("PB-1");
+        int n = sc.nextInt();
+        double total = 0;
 
-        pb.deposit(100);
-        System.out.println("Savings: " + pb.getSavings());
+        for (int i = 0; i < n; i++) {
+            String type = sc.next();
+            double amount = sc.nextDouble();
 
-        pb.withdraw(30);
-        System.out.println("Savings: " + pb.getSavings());
+            Payment p;
 
-        pb.withdraw(500);
-        System.out.println("Savings: " + pb.getSavings());
+            if (type.equals("CARD"))
+                p = new Card(amount);
+            else if (type.equals("WALLET"))
+                p = new Wallet(amount);
+            else
+                p = new BankTransfer(amount);
+
+            double result = p.finalAmount();
+
+            System.out.printf("%s: %.2f%n", p.type(), result);
+            total += result;
+        }
+
+        System.out.printf("Total: %.2f%n", total);
     }
 }
